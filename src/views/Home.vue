@@ -5,13 +5,13 @@
     <el-container>
       <!-- 顶栏容器 -->
       <el-header>
-        <NavMenu></NavMenu>
+        <NavMenu></NavMenu><!-- 使用导航栏组件 -->
       </el-header>
       <el-container>
         <!-- 侧边栏容器 -->
-        <el-aside width="200px">Aside</el-aside>
+        <!-- <el-aside width="200px">Aside</el-aside> -->
         <!-- 主要区域容器 -->
-        <el-main>Main</el-main>
+        <el-main><carousel></carousel></el-main>
         <!-- 底栏容器 -->
         <el-footer>Footer</el-footer>
       </el-container>
@@ -21,10 +21,12 @@
 
 <script>
 // import NavMenu from '../components/NavMenu'
+import Carousel from '../components/Carousel'
 export default {
   name: "Home",
   components: {
-    // NavMenu
+    // NavMenu,
+    Carousel,
   },
   props: {},
   data() {
