@@ -11,7 +11,9 @@
       active-text-color="#ffd04b"
     >
       <el-menu-item index="1">心阅博客</el-menu-item>
-      <el-menu-item index="2">首页</el-menu-item>
+      <el-menu-item index="2">
+        <a href="/Home" >首页</a>
+      </el-menu-item>
       <el-submenu index="3">
         <template slot="title">我的</template>
         <el-menu-item index="2-1">我的主页</el-menu-item>
@@ -34,8 +36,8 @@
       </el-menu-item>
       <el-menu-item index="5"><el-button type="primary">搜索</el-button></el-menu-item>
     
-      <el-menu-item index="6"><el-button type="primary" plain>登录</el-button></el-menu-item>
-      <el-menu-item index="7"><el-button type="primary" plain>注册</el-button></el-menu-item>
+      <el-menu-item index="6"><el-button type="primary" plain>
+        <a href="/LoginAndRegistration">登录 / 注册</a></el-button></el-menu-item>
       <el-menu-item index="10">
         <el-button class="el-icon-edit" type="danger" round>写文章</el-button>
       </el-menu-item>
