@@ -4,7 +4,7 @@
     <!-- 外层容器 -->
     <el-container>
       <!-- 顶栏容器 -->
-      <el-header>
+      <el-header class="header-navmenu">
         <NavMenu></NavMenu><!-- 使用导航栏组件 -->
       </el-header>
       <el-container>
@@ -45,4 +45,7 @@ export default {
 </script>
 
 <style scoped>
+.header-navmenu{
+  padding: 0;
+}
 </style>
