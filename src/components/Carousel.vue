@@ -3,7 +3,7 @@
   <div>
 <el-carousel type="card" height="300px">
       <el-carousel-item v-for="item in img_srcs" :key="item.id">
-          <img :src="item.src" >
+          <img class="carousel-img" :src="item.src" >
       </el-carousel-item>
     </el-carousel>
   </div>
@@ -17,9 +17,10 @@ export default {
   data() {
     return {
        img_srcs:[
-           {id:1,src:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571825663619&di=84a68e81d6fcd3754ea89bac3996c787&imgtype=0&src=http%3A%2F%2Fnews.mydrivers.com%2Fimg%2F20120423%2F2012042308530117.jpg"},
-           {id:2,src:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571825663619&di=84a68e81d6fcd3754ea89bac3996c787&imgtype=0&src=http%3A%2F%2Fnews.mydrivers.com%2Fimg%2F20120423%2F2012042308530117.jpg"},
-           {id:3,src:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571825663619&di=84a68e81d6fcd3754ea89bac3996c787&imgtype=0&src=http%3A%2F%2Fnews.mydrivers.com%2Fimg%2F20120423%2F2012042308530117.jpg"},
+           {id:1,src:"https://img.ivsky.com/img/bizhi/pre/201908/05/shuicaihua-001.jpg"},
+           {id:2,src:"https://img.ivsky.com/img/bizhi/pre/201909/02/bing-114.jpg"},
+           {id:3,src:"https://img.ivsky.com/img/bizhi/pre/201909/02/bing-127.jpg"},
+           {id:4,src:"https://img.ivsky.com/img/bizhi/pre/201909/02/bing-117.jpg"},
        ]
     };
   },
@@ -38,5 +39,7 @@ export default {
 </script>
 
 <style scoped>
-
+.carousel-img{
+  width: 800px;
+}
 </style>
