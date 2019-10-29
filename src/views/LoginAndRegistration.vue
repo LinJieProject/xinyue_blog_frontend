@@ -72,6 +72,13 @@ export default {
         })
         .then(data => {
           this.$message(data.msg);
+          if (data.msg == "登录成功！") {
+            $cookies.set("isLogin","true");
+            let username=data.user.username;
+            let gender=data.user.gender;
+            $cookies.set("username",username);
+            $cookies.set("gender",gender);
+          }
           // window.location.href = "/Home";
         })
         .catch(error => {
