@@ -39,8 +39,11 @@
       <el-menu-item class="el-menu-item-right" index="10">
         <el-button class="el-icon-edit" type="danger" round>写文章</el-button>
       </el-menu-item>
-      <el-menu-item @click="gotoLoginAndRegistration" class="el-menu-item-right" index="6">
-        <el-button type="primary" plain>登录 / 注册</el-button>
+      <el-menu-item v-if="!isLoginCookie" @click="gotoLoginAndRegistration" class="el-menu-item-right" index="7">
+        <el-button  type="primary" plain>登录 / 注册</el-button>
+      </el-menu-item>
+      <el-menu-item v-if="isLoginCookie" class="el-menu-item-right" index="6">
+        <span>欢迎登录，用户：{{ usernameCookie }}</span>
       </el-menu-item>
     </el-menu>
   </div>
@@ -55,7 +58,8 @@ export default {
     return {
       activeIndex: "1",
       activeIndex2: "1",
-      input_search: ""
+      input_search: "",
+      usernameCookie:$cookies.get("username"),
     };
   },
   created() {},
@@ -72,7 +76,13 @@ export default {
     }
   },
   filter: {},
-  computed: {},
+  computed: {
+    isLoginCookie: function() {
+      if ($cookies.get("isLogin") == "true") {
+        return true;
+      }
+    }
+    },
   watch: {}
 };
 </script>

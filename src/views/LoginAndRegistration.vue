@@ -71,15 +71,18 @@ export default {
           return response.json();
         })
         .then(data => {
-          this.$message(data.msg);
           if (data.msg == "登录成功！") {
-            $cookies.set("isLogin","true");
-            let username=data.user.username;
-            let gender=data.user.gender;
-            $cookies.set("username",username);
-            $cookies.set("gender",gender);
+            $cookies.set("isLogin", "true");
+            let username = data.user.username;
+            let gender = data.user.gender;
+            let loginMsg = data.user.msg;
+            $cookies.set("username", username);
+            $cookies.set("gender", gender);
+            $cookies.set("loginMsg", loginMsg);
+            window.location.href = "/Home";
+          } else {
+            this.$message(data.msg);
           }
-          // window.location.href = "/Home";
         })
         .catch(error => {
           alert(error);
