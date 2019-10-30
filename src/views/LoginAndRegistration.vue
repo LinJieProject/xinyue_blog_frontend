@@ -3,21 +3,48 @@
   <div>
     <!-- 使用导航栏组件 -->
     <NavMenu></NavMenu>
+    <br>
+    <br>
+    <br>
+    <br>
     <el-row>
-      <el-col :span="8" :offset="8">
+      <el-col :span="2" offset="10"><div :class="{default:true,active:isLoginMode}" @click="isLoginMode=true">登录</div></el-col>
+      <el-col :span="2" ><div :class="{default:true,active:!isLoginMode}" @click="isLoginMode=false">注册</div></el-col>
+      
+      <el-col v-if="isLoginMode" :span="8" :offset="8">
         <div class="grid-content bg-purple-light">
           <el-main>
-            <el-form ref="form" :model="form" label-width="80px">
+            <el-form ref="loginForm" :model="loginForm" label-width="80px">
               <el-form-item label="用户名">
-                <el-input name="username" v-model="form.username"></el-input>
+                <el-input name="username" v-model="loginForm.username"></el-input>
               </el-form-item>
               <el-form-item label="密码">
-                <el-input name="password" type="password" v-model="form.password"></el-input>
+                <el-input name="password" type="password" v-model="loginForm.password"></el-input>
               </el-form-item>
               <el-form-item>
-                <!-- <button type="submit"></button> -->
                 <el-button type="submit" @click="onSubmit">登录</el-button>
                 <el-button>取消</el-button>
+              </el-form-item>
+            </el-form>
+          </el-main>
+        </div>
+      </el-col>
+      <el-col v-if="!isLoginMode" :span="8" :offset="8">
+        <div class="grid-content bg-purple-light">
+          <el-main>
+            <el-form ref="registrationForm" :model="registrationForm" label-width="80px">
+              <el-form-item label="用户名">
+                <el-input type="text"  v-model="registrationForm.username" ></el-input>
+              </el-form-item>
+              <el-form-item label="密码">
+                <el-input  type="password" v-model="registrationForm.password" autocomplete="new-password"></el-input>
+              </el-form-item>
+              <el-form-item label="确认密码">
+                <el-input  type="password" v-model="registrationForm.password2"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="submit" @click="registrationSubmit">注册</el-button>
+                <el-button >取消</el-button>
               </el-form-item>
             </el-form>
           </el-main>
@@ -36,10 +63,16 @@ export default {
   props: {},
   data() {
     return {
-      form: {
+      loginForm: {
         username: "",
-        password: ""
-      }
+        password: "",
+      },
+      registrationForm:{
+        username: "",
+        password: "",
+        password2: "",
+      },
+      isLoginMode:true,
     };
   },
   created() {},
@@ -59,8 +92,8 @@ export default {
         // 请求体
         body: JSON.stringify({
           //post请求参数
-          username: this.form.username,
-          password: this.form.password
+          username: this.loginForm.username,
+          password: this.loginForm.password
         })
       };
       fetch("http://127.0.0.1:9090/Login", opts)
@@ -96,4 +129,12 @@ export default {
 </script>
 
 <style scoped>
+.default{
+  font-size: 20px;
+  line-height: 20px;
+}
+.active{
+  font-size: 40px;
+  color: #46a0fc;
+}
 </style>
