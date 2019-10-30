@@ -11,6 +11,7 @@
       <el-col :span="2" offset="10"><div :class="{default:true,active:isLoginMode}" @click="isLoginMode=true">登录</div></el-col>
       <el-col :span="2" ><div :class="{default:true,active:!isLoginMode}" @click="isLoginMode=false">注册</div></el-col>
       
+      <!-- 登录表单 -->
       <el-col v-if="isLoginMode" :span="8" :offset="8">
         <div class="grid-content bg-purple-light">
           <el-main>
@@ -22,25 +23,32 @@
                 <el-input name="password" type="password" v-model="loginForm.password"></el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="submit" @click="onSubmit">登录</el-button>
+                <el-button type="submit" @click="loginSubmit">登录</el-button>
                 <el-button>取消</el-button>
               </el-form-item>
             </el-form>
           </el-main>
         </div>
       </el-col>
+      <!-- 注册表单 -->
       <el-col v-if="!isLoginMode" :span="8" :offset="8">
         <div class="grid-content bg-purple-light">
           <el-main>
             <el-form ref="registrationForm" :model="registrationForm" label-width="80px">
               <el-form-item label="用户名">
+                 <el-tooltip class="item" effect="dark" content="提交的用户名会自动忽略其中的空格！" placement="right">
                 <el-input type="text"  v-model="registrationForm.username" ></el-input>
+                 </el-tooltip>
               </el-form-item>
               <el-form-item label="密码">
+                <el-tooltip class="item" effect="dark" content="提交的密码会自动忽略其中的空格！" placement="right">
                 <el-input  type="password" v-model="registrationForm.password" autocomplete="new-password"></el-input>
+                </el-tooltip>
               </el-form-item>
               <el-form-item label="确认密码">
+                <el-tooltip class="item" effect="dark" content="提交的密码会自动忽略其中的空格！" placement="right">
                 <el-input  type="password" v-model="registrationForm.password2"></el-input>
+                </el-tooltip>
               </el-form-item>
               <el-form-item>
                 <el-button type="submit" @click="registrationSubmit">注册</el-button>
@@ -81,8 +89,7 @@ export default {
   update() {},
   beforeRouteUpdate() {},
   methods: {
-    loggg() {},
-    onSubmit() {
+    loginSubmit() {
       var opts = {
         method: "POST", //请求方法
         headers: {
@@ -108,10 +115,46 @@ export default {
             $cookies.set("isLogin", "true");
             let username = data.user.username;
             let gender = data.user.gender;
-            let loginMsg = data.user.msg;
             $cookies.set("username", username);
             $cookies.set("gender", gender);
-            $cookies.set("loginMsg", loginMsg);
+            window.location.href = "/Home";
+          } else {
+            this.$message(data.msg);
+          }
+        })
+        .catch(error => {
+          alert(error);
+        });
+    },
+    registrationSubmit(){
+      var opts = {
+        method: "POST", //请求方法
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        // 请求体
+        body: JSON.stringify({
+          //post请求参数
+          username: this.registrationForm.username,
+          password: this.registrationForm.password,
+          password2: this.registrationForm.password2
+        })
+      };
+      fetch("http://127.0.0.1:9090/Register", opts)
+        .then(response => {
+          //你可以在这个时候将Promise对象转换成json对象:response.json()
+          //转换成json对象后return，给下一步的.then处理
+          // return response.text();
+          return response.json();
+        })
+        .then(data => {
+          if (data.msg == "注册成功！") {
+            $cookies.set("isLogin", "true");
+            let username = data.user.username;
+            let gender = data.user.gender;
+            $cookies.set("username", username);
+            $cookies.set("gender", gender);
             window.location.href = "/Home";
           } else {
             this.$message(data.msg);
