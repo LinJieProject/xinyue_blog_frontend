@@ -6,7 +6,7 @@
         <el-card>
           <div class="article-info">
             <div>
-              <a>
+              <a :href="'/ArticleDetail/'+article.id">
                 <p class="article-title">{{ article.title }}</p>
               </a>
               <p class="article-summary">{{ article.summary }}</p>
@@ -27,7 +27,11 @@
 <script>
 export default {
   name: "Article",
-  props: ["article"]
+  props: ["article"],
+  data() {
+    return{
+    }
+  }
 };
 </script>
 

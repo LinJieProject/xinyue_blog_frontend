@@ -5,11 +5,11 @@
     <NavMenu></NavMenu>
     <br />
     <div class="article-detail-div">
-      <p class="article-detail-title">2018年被评为经典的5个实用小程序，关键时候帮你大忙了解一下！</p>
+      <p class="article-detail-title">{{ articleDetail.title }}</p>
       <div class="article-info">
-        <span>作者：tom</span>
-        <span class="article-info-view-count">阅读：234</span>
-        <span>评论：14</span>
+        <span>作者：{{ articleDetail.username}}</span>
+        <span class="article-info-view-count">阅读：{{ articleDetail.view_count}}</span>
+        <span>评论：{{ articleDetail.comment_count }}</span>
       </div>
 
       <div class="article-content" v-html="compiledMD"></div>
@@ -40,45 +40,30 @@ export default {
   props: {},
   data() {
     return {
-      content: `
-# 常用英语
-## 颜色
-序号 | 词/句 | 释义 | 其他说明
---- | --- | --- | ---
-01 | color | 颜色 | colour（英式写法）
-02 | blue | 蓝色 | 
-03 | white | 白色 |
-04 | green | 绿色 |
-05 | red | 红色 | 
-06 | grey | 灰色 | 
-07 | black | 黑色 | 
-08 | yellow | 黄色 | 
-09 | orange | 橙色，橘色 | 
-10 | brown | 褐色，棕色 | 
-
-## 服饰箱包
-
-序号 | 词/句 | 释义 | 其他说明
---- | --- | --- | ---
-01 | handbag | 女士手提包 | 
-02 | coat | 长外套，大衣 | 
-03 | dress | 连衣裙 | 
-04 | skirt | 短裙 | 
-05 | shirt | 男士衬衫 | 
-06 | blouse | 女士衬衫 | 
-07 | suit | 一套衣服 | 
-08 | tie | 领带 | 
-09 | hat | 帽子 | 
-10 | case | 箱子 | 
-
-## 动物
-序号 | 词/句 | 释义 | 其他说明
---- | --- | --- | ---
-01 | dog | 狗 | 
-02 | cat | 猫 | `
+      // articleDetail: {
+      //   title: "",
+      //   view_count: 0,
+      //   comment_count: 0,
+      //   username: "",
+      //   summary: "",
+      //   content: ""
+      // },
+      articleDetail:'',
     };
   },
-  created() {},
+  created() {
+    // 变量“vm”存储该组件实例
+    var vm = this;
+    let url = "http://127.0.0.1:9090/Article/" + this.$route.params.id;
+    fetch(url)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(jsonData) {
+        vm.articleDetail = jsonData.data;
+        // console.log(vm.articleDetail);
+      });
+  },
   mounted() {},
   activited() {},
   update() {},
@@ -87,7 +72,7 @@ export default {
   filter: {},
   computed: {
     compiledMD: function() {
-      return marked(this.content, { sanitize: true });
+      return marked(this.articleDetail.Content, { sanitize: true });
     }
   },
   watch: {}

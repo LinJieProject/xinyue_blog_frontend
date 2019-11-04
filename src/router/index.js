@@ -26,9 +26,12 @@ export default new Router({
       component: LoginAndRegistration
     },
     {
-      path: '/ArticleDetail',
+      path: '/ArticleDetail/:id',
       name: 'ArticleDetail',
-      component: ArticleDetail
+      component: ArticleDetail,
+      meta:{
+        title:'文章详细'
+      }
     },
   ]
 })
