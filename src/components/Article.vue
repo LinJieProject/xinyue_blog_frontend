@@ -6,10 +6,10 @@
         <el-card>
           <div class="article-info">
             <div>
-              <p class="article-title">{{ article.title }}</p>
-              <p
-                class="article-summary"
-              >{{ article.summary }}</p>
+              <a>
+                <p class="article-title">{{ article.title }}</p>
+              </a>
+              <p class="article-summary">{{ article.summary }}</p>
             </div>
             <div class="article-div">
               <img
@@ -27,13 +27,18 @@
 <script>
 export default {
   name: "Article",
-  props:[
-    'article'
-  ]
+  props: ["article"]
 };
 </script>
 
 <style>
+a {
+  text-decoration: none;
+  color: #333;
+}
+a:hover {
+  text-decoration: underline;
+}
 .div-article {
   margin-bottom: 20px;
   border-bottom: 1px;
@@ -50,14 +55,13 @@ export default {
   line-height: 1.5;
 }
 .article-summary {
-   
   text-align: left;
   font-size: 14px;
   line-height: 24px;
   color: #999;
 }
-.article-div{
-    margin-left: 20px;
+.article-div {
+  margin-left: 20px;
 }
 .article-div-image {
   width: 150px;
