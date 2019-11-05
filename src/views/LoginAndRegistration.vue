@@ -15,16 +15,17 @@
       <el-col v-if="isLoginMode" :span="8" :offset="8">
         <div class="grid-content bg-purple-light">
           <el-main>
-            <el-form ref="loginForm" :model="loginForm" label-width="80px">
-              <el-form-item label="用户名">
+            <el-form ref="loginForm" :model="loginForm" :rules="loginRules" label-width="80px">
+              <el-form-item label="用户名" prop="username">
+              <!-- <el-form-item label="用户名"> -->
                 <el-input name="username" v-model="loginForm.username"></el-input>
               </el-form-item>
-              <el-form-item label="密码">
+              <el-form-item label="密码" prop="password">
                 <el-input name="password" type="password" v-model="loginForm.password"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="submit" @click="loginSubmit">登录</el-button>
-                <el-button>取消</el-button>
+                <el-button @click="resetForm('loginForm')">重置</el-button>
               </el-form-item>
             </el-form>
           </el-main>
@@ -52,7 +53,7 @@
               </el-form-item>
               <el-form-item>
                 <el-button type="submit" @click="registrationSubmit">注册</el-button>
-                <el-button >取消</el-button>
+                <el-button @click="resetForm('registrationForm')">重置</el-button>
               </el-form-item>
             </el-form>
           </el-main>
@@ -81,6 +82,16 @@ export default {
         password2: "",
       },
       isLoginMode:true,
+      loginRules:{
+        username:[
+            { required: true, message: '请输入用户名！', trigger: 'blur' },
+            // { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+          ],
+          password:[
+            { required: true, message: '请输入密码！', trigger: 'blur' },
+            // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          ]
+      } ,
     };
   },
   created() {},
@@ -163,6 +174,10 @@ export default {
         .catch(error => {
           alert(error);
         });
+    },
+    // 重置表单方法
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     }
   },
   filter: {},
