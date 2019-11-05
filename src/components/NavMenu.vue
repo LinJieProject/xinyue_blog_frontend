@@ -25,7 +25,7 @@
           <el-menu-item index="2-6-2">黑名单管理</el-menu-item>
           <el-menu-item index="2-6-3">账户管理</el-menu-item>
         </el-submenu>
-        <el-menu-item index="2-7">退出登录</el-menu-item>
+        <el-menu-item @click="signOut" index="2-7">退出登录</el-menu-item>
       </el-submenu>
       <el-menu-item class="el-menu-item-search" index="4">
         <el-input placeholder="搜索文章" v-model="input_search">
@@ -39,8 +39,13 @@
       <el-menu-item class="el-menu-item-right" index="10">
         <el-button class="el-icon-edit" type="danger" round>写文章</el-button>
       </el-menu-item>
-      <el-menu-item v-if="!isLoginCookie" @click="gotoLoginAndRegistration" class="el-menu-item-right" index="7">
-        <el-button  type="primary" plain>登录 / 注册</el-button>
+      <el-menu-item
+        v-if="!isLoginCookie"
+        @click="gotoLoginAndRegistration"
+        class="el-menu-item-right"
+        index="7"
+      >
+        <el-button type="primary" plain>登录 / 注册</el-button>
       </el-menu-item>
       <el-menu-item v-if="isLoginCookie" class="el-menu-item-right" index="6">
         <span>欢迎登录，用户：{{ usernameCookie }}</span>
@@ -59,7 +64,7 @@ export default {
       activeIndex: "1",
       activeIndex2: "1",
       input_search: "",
-      usernameCookie:$cookies.get("username"),
+      usernameCookie: $cookies.get("username")
     };
   },
   created() {},
@@ -73,6 +78,17 @@ export default {
     },
     gotoLoginAndRegistration() {
       window.location.href = "/LoginAndRegistration";
+    },
+    signOut() {
+      let result = $cookies.remove("isLogin");
+      $cookies.remove("username");
+      $cookies.remove("gender");
+      if (result != false) {
+        this.$message("登出成功！");
+        setTimeout(function(){location.reload()},1000);
+      } else if (result == false) {
+        this.$message("登出失败！");
+      }
     }
   },
   filter: {},
@@ -82,7 +98,7 @@ export default {
         return true;
       }
     }
-    },
+  },
   watch: {}
 };
 </script>
