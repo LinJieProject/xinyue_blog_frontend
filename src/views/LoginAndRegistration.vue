@@ -23,12 +23,12 @@
               <el-form-item label="用户名">
                 <el-input name="username" v-model="loginForm.username"></el-input>
                 <!-- 验证消息 -->
-                <p :class="{hidden:isLoginUsernamePass}" class="checkMsg">用户不可为空！</p>
+                <p :class="{hidden:loginUsernameNotEmpty}" class="checkMsg">用户名不可为空！</p>
               </el-form-item>
               <el-form-item label="密码">
                 <el-input name="password" type="password" v-model="loginForm.password"></el-input>
                 <!-- 验证消息 -->
-                <p :class="{hidden:isLoginPasswordPass}" class="checkMsg">密码不可为空！</p>
+                <p :class="{hidden:loginPasswordNotEmpty}" class="checkMsg">密码不可为空！</p>
               </el-form-item>
               <el-form-item>
                 <el-button :disabled="!isLoginPass" type="submit" @click="loginSubmit">登录</el-button>
@@ -52,6 +52,8 @@
                 >
                   <el-input type="text" v-model="registrationForm.username" autocomplete="off"></el-input>
                 </el-tooltip>
+                <!-- 验证消息 -->
+                <p :class="{hidden:registrationUsernameNotEmpty}" class="checkMsg">用户名不可为空！</p>
               </el-form-item>
               <el-form-item label="密码">
                 <el-tooltip class="item" effect="dark" content="提交的密码会自动忽略其中的空格！" placement="right">
@@ -62,6 +64,8 @@
                     autocomplete="new-password"
                   ></el-input>
                 </el-tooltip>
+                <!-- 验证消息 -->
+                <p :class="{hidden:registrationPasswordNotEmpty}" class="checkMsg">密码不可为空！</p>
               </el-form-item>
               <el-form-item label="确认密码">
                 <el-tooltip class="item" effect="dark" content="提交的密码会自动忽略其中的空格！" placement="right">
@@ -72,9 +76,11 @@
                     autocomplete="new-password"
                   ></el-input>
                 </el-tooltip>
+                <!-- 验证消息 -->
+                <p :class="{hidden:registrationPasswordPass}" class="checkMsg">请输入确认密码，且两次输入的密码需一致！</p>
               </el-form-item>
               <el-form-item>
-                <el-button type="submit" @click="registrationSubmit">注册</el-button>
+                <el-button :disabled="!isRegistrationPass" type="submit" @click="registrationSubmit">注册</el-button>
                 <el-button @click="resetForm">重置</el-button>
               </el-form-item>
             </el-form>
@@ -107,6 +113,11 @@ export default {
       loginFormCheck: {
         isUsernamePass: false,
         isPasswordPass: false
+      },
+      registrationCheck: {
+        isUsernamePass: false,
+        isPasswordPass: false,
+        isCheckPass: false
       }
     };
   },
@@ -202,8 +213,8 @@ export default {
   },
   filter: {},
   computed: {
-    // 验证登录表单用户名
-    isLoginUsernamePass: function() {
+    // 验证登录表单用户名不为空
+    loginUsernameNotEmpty: function() {
       if (this.loginForm.username == "") {
         this.loginFormCheck.isUsernamePass = false;
         return false;
@@ -212,8 +223,8 @@ export default {
         return true;
       }
     },
-    // 验证登录表单密码
-    isLoginPasswordPass: function() {
+    // 验证登录表单密码不为空
+    loginPasswordNotEmpty: function() {
       if (this.loginForm.password == "") {
         this.loginFormCheck.isPasswordPass = false;
         return false;
@@ -231,6 +242,51 @@ export default {
         return true;
       } else {
         return false;
+      }
+    },
+    // 验证注册表单用户名不为空
+    registrationUsernameNotEmpty: function() {
+      if (this.registrationForm.username == "") {
+        this.registrationCheck.isUsernamePass = false;
+        return false;
+      } else {
+        this.registrationCheck.isUsernamePass = true;
+        return true;
+      }
+    },
+    // 验证注册表单密码不为空
+    registrationPasswordNotEmpty: function() {
+      if (this.registrationForm.password == "") {
+        this.registrationCheck.isPasswordPass = false;
+        return false;
+      } else {
+        this.registrationCheck.isPasswordPass = true;
+        return true;
+      }
+    },
+    // 验证注册表单二次输入的密码不为空，且两次输入的密码是否一致
+    registrationPasswordPass: function() {
+      if (
+        this.registrationForm.checkPass == "" ||
+        this.registrationForm.password != this.registrationForm.checkPass
+      ) {
+        this.registrationCheck.isCheckPass = false;
+        return false;
+      } else {
+        this.registrationCheck.isCheckPass = true;
+        return true;
+      }
+    },
+    // 是否允许做注册操作
+    isRegistrationPass: function() {
+      if (
+        this.registrationCheck.isUsernamePass == true &&
+        (this.registrationCheck.isPasswordPass == true) &&
+          (this.registrationCheck.isCheckPass == true)
+      ) {
+        return true;
+      } else {
+        false;
       }
     }
   },
