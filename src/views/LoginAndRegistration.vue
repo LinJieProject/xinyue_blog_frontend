@@ -3,29 +3,36 @@
   <div>
     <!-- 使用导航栏组件 -->
     <NavMenu></NavMenu>
-    <br>
-    <br>
-    <br>
-    <br>
+    <br />
+    <br />
+    <br />
+    <br />
     <el-row>
-      <el-col :span="2" offset="10"><div :class="{default:true,active:isLoginMode}" @click="isLoginMode=true">登录</div></el-col>
-      <el-col :span="2" ><div :class="{default:true,active:!isLoginMode}" @click="isLoginMode=false">注册</div></el-col>
-      
+      <el-col :span="2" offset="10">
+        <div :class="{default:true,active:isLoginMode}" @click="isLoginMode=true">登录</div>
+      </el-col>
+      <el-col :span="2">
+        <div :class="{default:true,active:!isLoginMode}" @click="isLoginMode=false">注册</div>
+      </el-col>
+
       <!-- 登录表单 -->
       <el-col v-if="isLoginMode" :span="8" :offset="8">
         <div class="grid-content bg-purple-light">
           <el-main>
-            <el-form ref="loginForm" :model="loginForm" :rules="loginRules" label-width="80px">
-              <el-form-item label="用户名" prop="username">
-              <!-- <el-form-item label="用户名"> -->
+            <el-form ref="loginForm" :model="loginForm" label-width="80px">
+              <el-form-item label="用户名">
                 <el-input name="username" v-model="loginForm.username"></el-input>
+                <!-- 验证消息 -->
+                <p :class="{hidden:isLoginUsernamePass}" class="checkMsg">用户不可为空！</p>
               </el-form-item>
-              <el-form-item label="密码" prop="password">
+              <el-form-item label="密码">
                 <el-input name="password" type="password" v-model="loginForm.password"></el-input>
+                <!-- 验证消息 -->
+                <p :class="{hidden:isLoginPasswordPass}" class="checkMsg">密码不可为空！</p>
               </el-form-item>
               <el-form-item>
-                <el-button type="submit" @click="loginSubmit">登录</el-button>
-                <el-button @click="resetForm('loginForm')">重置</el-button>
+                <el-button :disabled="!isLoginPass" type="submit" @click="loginSubmit">登录</el-button>
+                <el-button @click="resetForm">重置</el-button>
               </el-form-item>
             </el-form>
           </el-main>
@@ -37,23 +44,38 @@
           <el-main>
             <el-form ref="registrationForm" :model="registrationForm" label-width="80px">
               <el-form-item label="用户名">
-                 <el-tooltip class="item" effect="dark" content="提交的用户名会自动忽略其中的空格！" placement="right">
-                <el-input type="text"  v-model="registrationForm.username" ></el-input>
-                 </el-tooltip>
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  content="提交的用户名会自动忽略其中的空格！"
+                  placement="right"
+                >
+                  <el-input type="text" v-model="registrationForm.username" autocomplete="off"></el-input>
+                </el-tooltip>
               </el-form-item>
               <el-form-item label="密码">
                 <el-tooltip class="item" effect="dark" content="提交的密码会自动忽略其中的空格！" placement="right">
-                <el-input  type="password" v-model="registrationForm.password" autocomplete="new-password"></el-input>
+                  <el-input
+                    type="password"
+                    name="password"
+                    v-model="registrationForm.password"
+                    autocomplete="new-password"
+                  ></el-input>
                 </el-tooltip>
               </el-form-item>
               <el-form-item label="确认密码">
                 <el-tooltip class="item" effect="dark" content="提交的密码会自动忽略其中的空格！" placement="right">
-                <el-input  type="password" v-model="registrationForm.password2"></el-input>
+                  <el-input
+                    type="password"
+                    name="checkPass"
+                    v-model="registrationForm.checkPass"
+                    autocomplete="new-password"
+                  ></el-input>
                 </el-tooltip>
               </el-form-item>
               <el-form-item>
                 <el-button type="submit" @click="registrationSubmit">注册</el-button>
-                <el-button @click="resetForm('registrationForm')">重置</el-button>
+                <el-button @click="resetForm">重置</el-button>
               </el-form-item>
             </el-form>
           </el-main>
@@ -74,24 +96,18 @@ export default {
     return {
       loginForm: {
         username: "",
-        password: "",
+        password: ""
       },
-      registrationForm:{
+      registrationForm: {
         username: "",
         password: "",
-        password2: "",
+        checkPass: ""
       },
-      isLoginMode:true,
-      loginRules:{
-        username:[
-            { required: true, message: '请输入用户名！', trigger: 'blur' },
-            // { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
-          ],
-          password:[
-            { required: true, message: '请输入密码！', trigger: 'blur' },
-            // { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
-          ]
-      } ,
+      isLoginMode: true,
+      loginFormCheck: {
+        isUsernamePass: false,
+        isPasswordPass: false
+      }
     };
   },
   created() {},
@@ -137,7 +153,7 @@ export default {
           alert(error);
         });
     },
-    registrationSubmit(){
+    registrationSubmit() {
       var opts = {
         method: "POST", //请求方法
         headers: {
@@ -149,7 +165,7 @@ export default {
           //post请求参数
           username: this.registrationForm.username,
           password: this.registrationForm.password,
-          password2: this.registrationForm.password2
+          checkPass: this.registrationForm.checkPass
         })
       };
       fetch("http://127.0.0.1:9090/Register", opts)
@@ -176,23 +192,68 @@ export default {
         });
     },
     // 重置表单方法
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    resetForm() {
+      this.loginForm.username = "";
+      this.loginForm.password = "";
+      this.registrationForm.username = "";
+      this.registrationForm.password = "";
+      this.registrationForm.checkPass = "";
     }
   },
   filter: {},
-  computed: {},
+  computed: {
+    // 验证登录表单用户名
+    isLoginUsernamePass: function() {
+      if (this.loginForm.username == "") {
+        this.loginFormCheck.isUsernamePass = false;
+        return false;
+      } else {
+        this.loginFormCheck.isUsernamePass = true;
+        return true;
+      }
+    },
+    // 验证登录表单密码
+    isLoginPasswordPass: function() {
+      if (this.loginForm.password == "") {
+        this.loginFormCheck.isPasswordPass = false;
+        return false;
+      } else {
+        this.loginFormCheck.isPasswordPass = true;
+        return true;
+      }
+    },
+    // 是否允许做登录操作
+    isLoginPass: function() {
+      if (
+        this.loginFormCheck.isUsernamePass == true &&
+        this.loginFormCheck.isPasswordPass == true
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
   watch: {}
 };
 </script>
 
 <style scoped>
-.default{
+.default {
   font-size: 20px;
   line-height: 20px;
 }
-.active{
+.active {
   font-size: 40px;
   color: #46a0fc;
+}
+.checkMsg {
+  text-align: left;
+  line-height: 10px;
+  font-size: 10px;
+  color: red;
+}
+.hidden {
+  visibility: hidden;
 }
 </style>
