@@ -12,7 +12,7 @@
         <span>评论：{{ articleDetail.comment_count }}</span>
       </div>
 
-      <div class="article-content" v-html="compiledMD"></div>
+      <div class="article-content" v-html="compiledMD" :class="{shi:true}"></div>
     </div>
 
     <!-- 使用底栏组件 -->
@@ -48,7 +48,7 @@ export default {
       //   summary: "",
       //   content: ""
       // },
-      articleDetail:'',
+      articleDetail: ""
     };
   },
   created() {
@@ -100,5 +100,41 @@ export default {
 .article-content {
   direction: ltr;
   text-align: left;
+}
+.article-content >>> h1 {
+  /* color: red; */
+}
+.article-content >>> h2 {
+  color: #ba3925;
+}
+.article-content >>> a {
+  text-decoration:none;
+  color: #0789e0;
+  border-bottom: 1px solid #ddd;
+}
+.article-content >>> p code {
+  display: inline;
+  margin: 0 5px;
+  padding: 3px 5px;
+  border: 1px solid #ddd;
+  background-color: #f8f8f8;
+}
+.article-content >>> pre {
+  counter-reset:linenumber;
+
+  padding: 1em 1.5em;
+  white-space: pre;
+
+  border: 1px solid #ddd;
+  display: block;
+  background: #f5f2f0;
+  overflow: auto;
+}
+.article-content >>> pre code {
+  counter-increment:section;
+  /* content:"Section " counter(section) ". "; */
+
+  display: inline-block;
+  white-space: inherit;
 }
 </style>
