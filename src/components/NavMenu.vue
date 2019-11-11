@@ -11,7 +11,7 @@
       active-text-color="#ffd04b"
     >
       <el-menu-item index="1">心阅博客</el-menu-item>
-      <el-menu-item @click="gotoHome" index="2">首页</el-menu-item>
+      <el-menu-item @click="goToHome" index="2">首页</el-menu-item>
       <el-submenu index="3">
         <template slot="title">我的</template>
         <el-menu-item index="2-1">我的主页</el-menu-item>
@@ -37,11 +37,11 @@
       </el-menu-item>
 
       <el-menu-item class="el-menu-item-right" index="10">
-        <el-button class="el-icon-edit" type="danger" round>写文章</el-button>
+        <el-button @click="goToEditingArticles" class="el-icon-edit" type="danger" round>写文章</el-button>
       </el-menu-item>
       <el-menu-item
         v-if="!isLoginCookie"
-        @click="gotoLoginAndRegistration"
+        @click="goToLoginAndRegistration"
         class="el-menu-item-right"
         index="7"
       >
@@ -73,11 +73,14 @@ export default {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
-    gotoHome() {
+    goToHome() {
       window.location.href = "/Home";
     },
-    gotoLoginAndRegistration() {
+    goToLoginAndRegistration() {
       window.location.href = "/LoginAndRegistration";
+    },
+    goToEditingArticles(){
+      window.location.href = "/EditingArticles";
     },
     signOut() {
       let result = $cookies.remove("isLogin");

@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Home from '@/views/Home'
 import LoginAndRegistration from '@/views/LoginAndRegistration'
 import ArticleDetail from '@/views/ArticleDetail'
+import EditingArticles from '@/views/EditingArticles'
 
 Vue.use(Router)
 
@@ -32,6 +33,11 @@ export default new Router({
       meta:{
         title:'文章详细'
       }
+    },
+    {
+      path: '/EditingArticles',
+      name: 'EditingArticles',
+      component: EditingArticles,
     },
   ]
 })
