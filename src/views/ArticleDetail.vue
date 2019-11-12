@@ -112,6 +112,24 @@ export default {
   color: #0789e0;
   border-bottom: 1px solid #ddd;
 }
+.article-content >>> table {
+  margin-bottom: 20px;
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  border-collapse: collapse; /* 边框合并，默认边框分离 */
+}
+.article-content >>> table tr:nth-child(even) {
+  background-color: #f4f3ec;
+}
+.article-content >>> table th {
+  padding: 8px;
+  border: 1px solid #d9d9d9;
+}
+.article-content >>> table td {
+  padding: 8px;
+  border: 1px solid #d9d9d9;
+}
+
 .article-content >>> p code {
   display: inline;
   margin: 0 5px;
