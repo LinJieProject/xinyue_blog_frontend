@@ -2,14 +2,6 @@
 <template>
   <div>
     <el-row>
-      <!-- <el-col class="list" :span="4">
-        <div class="go-home-div">
-          <el-button icon="el-icon-house" @click="goHome" round>回到首页</el-button>
-        </div>
-        <div>
-          <el-button icon="el-icon-circle-plus-outline" type="primary" plain>新建文章</el-button>
-        </div>
-      </el-col>-->
       <!-- 编辑 -->
       <el-col class="edit" :span="12">
         <div class="edit-title-div">
@@ -21,8 +13,14 @@
             <el-button size="mini" icon="el-icon-house" @click="goHome" round>回首页</el-button>
           </div>
           <div class="function-right">
-            <el-button size="mini" icon="el-icon-upload" @click="goHome" round>保存到云</el-button>
-            <el-button size="mini" icon="el-icon-s-promotion" @click="goHome" round>发布文章</el-button>
+            <el-button size="mini" icon="el-icon-upload" round>保存到云</el-button>
+            <el-button
+              size="mini"
+              icon="el-icon-s-promotion"
+              @click="dialogVisible = true"
+              :disabled="!allowPublish"
+              round
+            >发布文章</el-button>
           </div>
         </div>
         <div class="edit-content-div">
@@ -42,6 +40,21 @@
         </div>
       </el-col>
     </el-row>
+    <!-- 填写文章摘要的对话框 -->
+    <el-dialog
+      title="请填写文章摘要"
+      :visible.sync="dialogVisible"
+    >
+      <el-form :model="aticle">
+    <el-form-item label="文章摘要" >
+      <el-input type="textarea" v-model="aticle.summary" autocomplete="off"></el-input>
+    </el-form-item>
+  </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false;publishArticle()">确 定 发 布</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -66,10 +79,20 @@ export default {
     return {
       aticle: {
         title: "",
-        content: ""
-      }
+        content: "",
+        summary:"",
+      },
+      dialogVisible: false /* 用于控制文章摘要对话框 */
     };
   },
+   beforeCreate(){
+    //  如果未登录，则跳转登录页
+    let isLogin= $cookies.get('isLogin');
+    if(isLogin!='true'){
+      this.$message({message:"请先登录！",type:'warning'});
+      setTimeout(function(){window.location.href = "/LoginAndRegistration";},2000);
+    }
+   },
   created() {},
   mounted() {},
   activited() {},
@@ -78,12 +101,57 @@ export default {
   methods: {
     goHome() {
       window.location.href = "/Home";
-    }
+    },
+    // 发布文章方法
+    publishArticle() {
+      var opts = {
+        method: "POST", //请求方法
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        // 请求体
+        body: JSON.stringify({
+          //post请求参数
+          username: $cookies.get("username"),
+          title: this.aticle.title,
+          content: this.aticle.content,
+          summary:this.aticle.summary,
+        })
+      };
+      fetch("http://127.0.0.1:9090/PublishArticle", opts)
+        .then(response => {
+          //你可以在这个时候将Promise对象转换成json对象:response.json()
+          //转换成json对象后return，给下一步的.then处理
+          // return response.text();
+          return response.json();
+        })
+        .then(data => {
+          if (data.msg == "发布成功！") {
+            this.$message("发布成功！");
+          } else {
+            this.$message("发布失败！");
+          }
+        });
+      // .catch(error => {
+      //   alert(error);
+      // });
+    },
   },
   filter: {},
   computed: {
     compiledMD: function() {
       return marked(this.aticle.content, { sanitize: true });
+    },
+    // 检查是否允许发布文章
+    allowPublish: function(params) {
+      let titleStr = this.aticle.title.trim();
+      let contentStr = this.aticle.content.trim();
+      if (titleStr == "" || contentStr == "") {
+        return false;
+      } else {
+        return true;
+      }
     }
   },
   watch: {}
@@ -91,10 +159,6 @@ export default {
 </script>
 
 <style scoped>
-.list {
-  background-color: #99a9bf;
-  height: 100vh;
-}
 .edit {
   /* background-color: grey; */
   height: 100vh;
