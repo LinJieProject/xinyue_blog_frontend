@@ -30,7 +30,7 @@ export default {
   created() {
     // 变量“vm”存储该组件实例
     var vm=this
-    fetch("http://127.0.0.1:9090/Article")
+    fetch("http://127.0.0.1:9090/api/v1/Article")
       .then(function(response) {
         return response.json();
       })

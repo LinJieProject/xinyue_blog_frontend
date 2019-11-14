@@ -54,7 +54,7 @@ export default {
   created() {
     // 变量“vm”存储该组件实例
     var vm = this;
-    let url = "http://127.0.0.1:9090/Article/" + this.$route.params.id;
+    let url = "http://127.0.0.1:9090/api/v1/Article/" + this.$route.params.id;
     fetch(url)
       .then(function(response) {
         return response.json();

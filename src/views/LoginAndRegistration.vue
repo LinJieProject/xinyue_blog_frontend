@@ -141,7 +141,7 @@ export default {
           password: this.loginForm.password
         })
       };
-      fetch("http://127.0.0.1:9090/Login", opts)
+      fetch("http://127.0.0.1:9090/api/v1/Login", opts)
         .then(response => {
           //你可以在这个时候将Promise对象转换成json对象:response.json()
           //转换成json对象后return，给下一步的.then处理
@@ -179,7 +179,7 @@ export default {
           checkPass: this.registrationForm.checkPass
         })
       };
-      fetch("http://127.0.0.1:9090/Register", opts)
+      fetch("http://127.0.0.1:9090/api/v1/Register", opts)
         .then(response => {
           //你可以在这个时候将Promise对象转换成json对象:response.json()
           //转换成json对象后return，给下一步的.then处理

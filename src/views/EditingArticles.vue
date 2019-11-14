@@ -119,7 +119,7 @@ export default {
           summary:this.aticle.summary,
         })
       };
-      fetch("http://127.0.0.1:9090/PublishArticle", opts)
+      fetch("http://127.0.0.1:9090/api/v1/PublishArticle", opts)
         .then(response => {
           //你可以在这个时候将Promise对象转换成json对象:response.json()
           //转换成json对象后return，给下一步的.then处理
