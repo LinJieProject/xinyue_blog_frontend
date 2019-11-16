@@ -13,7 +13,7 @@
             <el-button size="mini" icon="el-icon-house" @click="goHome" round>回首页</el-button>
           </div>
           <div class="function-right">
-            <el-button size="mini" icon="el-icon-upload" round>保存到云</el-button>
+            <!-- <el-button size="mini" icon="el-icon-upload" round>保存到云</el-button> -->
             <el-button
               size="mini"
               icon="el-icon-s-promotion"
