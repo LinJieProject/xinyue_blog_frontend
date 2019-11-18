@@ -14,6 +14,28 @@
 
       <div class="article-content" v-html="compiledMD" :class="{shi:true}"></div>
     </div>
+    <!-- 评论区 -->
+    <div class="comment-div">
+      <div class="comment-publish">
+        <div class="comment-publish-username">
+          <span>{{ articleDetail.username }}</span>
+        </div>
+        <div class="comment-publish-edit">
+          <textarea placeholder="发表你的看法..."></textarea>
+        </div>
+      </div>
+      <div class="comment-button">
+        <el-button size="small" round>发布</el-button>
+        <el-button size="small" round>取消</el-button>
+      </div>
+      <!-- 已发布的评论 -->
+      <div class="comment-top">
+        <span>全部评论</span>
+      </div>
+      <Comment></Comment>
+      <Comment></Comment>
+      <Comment></Comment>
+    </div>
 
     <!-- 使用底栏组件 -->
     <br />
@@ -22,6 +44,7 @@
 </template>
 
 <script>
+import Comment from "../components/Comment";
 import marked from "marked";
 var rendererMD = new marked.Renderer();
 marked.setOptions({
@@ -36,7 +59,9 @@ marked.setOptions({
 });
 export default {
   name: "ArticleDetail",
-  components: {},
+  components: {
+    Comment
+  },
   props: {},
   data() {
     return {
@@ -108,7 +133,7 @@ export default {
   color: #ba3925;
 }
 .article-content >>> a {
-  text-decoration:none;
+  text-decoration: none;
   color: #0789e0;
   border-bottom: 1px solid #ddd;
 }
@@ -138,7 +163,7 @@ export default {
   background-color: #f8f8f8;
 }
 .article-content >>> pre {
-  counter-reset:linenumber;
+  counter-reset: linenumber;
 
   padding: 1em 1.5em;
   white-space: pre;
@@ -149,10 +174,60 @@ export default {
   overflow: auto;
 }
 .article-content >>> pre code {
-  counter-increment:section;
+  counter-increment: section;
   /* content:"Section " counter(section) ". "; */
 
   display: inline-block;
   white-space: inherit;
+}
+/* 评论区样式 */
+.comment-div {
+  margin: 20px auto;
+  padding: 24px;
+  width: 60%;
+  max-width: 750px;
+  background-color: white;
+}
+.comment-publish {
+  margin-bottom: 10px;
+  display: flex;
+}
+.comment-publish .comment-publish-username {
+  margin-right: 20px;
+  font-size: 30px;
+}
+.comment-publish .comment-publish-edit {
+  width: 86%;
+}
+.comment-publish .comment-publish-edit textarea {
+  padding: 12px 16px;
+  width: 100%;
+  height: 90px;
+  font-size: 13px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  background-color: #fafafa;
+  resize: none;
+  display: inline-block;
+  vertical-align: top;
+  outline-style: none;
+}
+.comment-publish .comment-publish-edit textarea:focus {
+  outline: none;
+}
+.comment-button {
+  margin-right: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+.comment-top {
+  margin-bottom: 16px;
+  padding-left: 12px;
+  border-left: 4px solid #ec7259;
+  text-align: left;
+  font-size: 18px;
+  font-weight: 500;
+  height: 20px;
+  line-height: 20px;
 }
 </style>
