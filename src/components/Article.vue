@@ -18,6 +18,11 @@
               />
             </div>
           </div>
+            <div class="article-u-v-c">
+              <span class="el-icon-user"> {{ article.username }}</span>
+              <span class="el-icon-view"> {{ article.view_count }}</span>
+              <span class="el-icon-chat-square"> {{ article.comment_count }}</span>
+            </div>
         </el-card>
       </el-col>
     </el-row>
@@ -70,5 +75,13 @@ a:hover {
 .article-div-image {
   width: 150px;
   height: 100px;
+}
+/* 文章作者、阅读量、评论数样式 */
+.article-u-v-c{
+  text-align: left;
+  color: #999;
+}
+.article-u-v-c span{
+  margin-right: 8px;
 }
 </style>
