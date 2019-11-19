@@ -18,15 +18,16 @@
     <div class="comment-div">
       <div class="comment-publish">
         <div class="comment-publish-username">
-          <span>{{ articleDetail.username }}</span>
+          <!-- <span>{{ articleDetail.username }}</span><span>{{isLoginStatus}}</span> -->
+          <span>{{ usernameOrTip }}</span>
         </div>
         <div class="comment-publish-edit">
-          <textarea placeholder="发表你的看法..."></textarea>
+          <textarea v-model="commentContent" placeholder="发表你的看法..."></textarea>
         </div>
       </div>
       <div class="comment-button">
-        <el-button size="small" round>发布</el-button>
-        <el-button size="small" round>取消</el-button>
+        <el-button @click="publishComment" size="small" round>发布</el-button>
+        <el-button @click="commentContent=''" size="small" round>取消</el-button>
       </div>
       <!-- 已发布的评论 -->
       <div class="comment-top">
@@ -64,7 +65,8 @@ export default {
   data() {
     return {
       articleDetail: "",
-      commentList:[]
+      commentList:[],
+      commentContent:"",
     };
   },
   created() {
@@ -93,12 +95,81 @@ export default {
   activited() {},
   update() {},
   beforeRouteUpdate() {},
-  methods: {},
+  methods: {
+    // 发布评论方法
+    publishComment(){
+      // 检查
+      if($cookies.get('isLogin')!="true"){
+        this.$message({
+          message: '请先登录！',
+          type: 'warning'
+        });
+        return 
+      }
+      let contentStr=this.commentContent.trim();
+      if (contentStr==""){
+        this.$message({
+          message: '不能发布空评论！',
+          type: 'warning'
+        });
+        return 
+      }
+      // 发布操作
+      var opts = {
+        method: "POST", //请求方法
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        // 请求体
+        body: JSON.stringify({
+          //post请求参数
+          username: $cookies.get("username"),
+          content: this.commentContent,
+          article_id:this.articleDetail.id,
+        })
+      };
+      fetch("http://127.0.0.1:9090/api/v1/PublishComment", opts)
+        .then(response => {
+          //你可以在这个时候将Promise对象转换成json对象:response.json()
+          //转换成json对象后return，给下一步的.then处理
+          // return response.text();
+          return response.json();
+        })
+        .then(data => {
+          if (data.msg == "发布评论成功！") {
+            this.updateComment();
+            this.commentContent="";
+            this.$message("发布评论成功！");
+          } else {
+            this.$message("发布评论失败！");
+          }
+        });
+    },
+    updateComment(){
+      var vm = this;
+      let url2 = "http://127.0.0.1:9090/api/v1/Comment/" + this.$route.params.id;
+    fetch(url2)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(jsonData) {
+        vm.commentList = jsonData.data;
+      });
+    }
+  },
   filter: {},
   computed: {
     compiledMD: function() {
       return marked(this.articleDetail.Content, { sanitize: true });
-    }
+    },
+    usernameOrTip:function () {
+      if($cookies.get('isLogin')=="true"){
+        return $cookies.get("username");
+      }else{
+        return "未登录"
+      }
+    },
   },
   watch: {}
 };
@@ -126,9 +197,9 @@ export default {
   direction: ltr;
   text-align: left;
 }
-.article-content >>> h1 {
-  /* color: red; */
-}
+/* .article-content >>> h1 {
+   color: red; 
+} */
 .article-content >>> h2 {
   color: #ba3925;
 }
@@ -193,13 +264,20 @@ export default {
   display: flex;
 }
 .comment-publish .comment-publish-username {
-  margin-right: 20px;
+  /* 当box-sizing的值为border-box时，将采取怪异模式解析计算， */
+  /* 此时 width = 内容区宽度 + padding + border */
+  box-sizing: border-box;
+  padding-right: 20px;
+  width: 16%;
   font-size: 30px;
 }
 .comment-publish .comment-publish-edit {
-  width: 86%;
+  width: 84%;
 }
 .comment-publish .comment-publish-edit textarea {
+  /* 当box-sizing的值为border-box时，将采取怪异模式解析计算， */
+  /* 此时 width = 内容区宽度 + padding + border */
+  box-sizing: border-box;
   padding: 12px 16px;
   width: 100%;
   height: 90px;
