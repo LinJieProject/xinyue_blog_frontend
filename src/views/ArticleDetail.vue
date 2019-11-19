@@ -32,9 +32,7 @@
       <div class="comment-top">
         <span>全部评论</span>
       </div>
-      <Comment></Comment>
-      <Comment></Comment>
-      <Comment></Comment>
+      <Comment v-for="comment in commentList" :key="comment.id" :comment="comment"></Comment>
     </div>
 
     <!-- 使用底栏组件 -->
@@ -65,15 +63,8 @@ export default {
   props: {},
   data() {
     return {
-      // articleDetail: {
-      //   title: "",
-      //   view_count: 0,
-      //   comment_count: 0,
-      //   username: "",
-      //   summary: "",
-      //   content: ""
-      // },
-      articleDetail: ""
+      articleDetail: "",
+      commentList:[]
     };
   },
   created() {
@@ -86,7 +77,16 @@ export default {
       })
       .then(function(jsonData) {
         vm.articleDetail = jsonData.data;
-        // console.log(vm.articleDetail);
+      });
+
+    // 获取评论
+    let url2 = "http://127.0.0.1:9090/api/v1/Comment/" + this.$route.params.id;
+    fetch(url2)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(jsonData) {
+        vm.commentList = jsonData.data;
       });
   },
   mounted() {},

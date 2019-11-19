@@ -2,10 +2,10 @@
 <template>
   <div class="comment">
     <div class="comment-username">
-      <span>Tom</span>
+      <span><i class="el-icon-user"></i> {{ comment.username }}</span>
     </div>
     <div>
-      <span>哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</span>
+      <span><i class="el-icon-chat-square"></i> {{ comment.content }}</span>
     </div>
   </div>
 </template>
@@ -14,7 +14,7 @@
 export default {
   name: "Comment",
   components: {},
-  props: {},
+  props: ["comment"],
   data() {
     return {};
   },
