@@ -9,17 +9,21 @@
     <Article v-for="article in articles" :key="article.id" :article="article"></Article>
     <!-- 使用底栏组件 -->
     <Footer></Footer>
+    <!-- 使用回到顶部组件 -->
+    <Backtop></Backtop>
   </div>
 </template>
 
 <script>
 // import NavMenu from '../components/NavMenu'
 import Carousel from "../components/Carousel";
+
+
 export default {
   name: "Home",
   components: {
     // NavMenu,
-    Carousel
+    Carousel,
   },
   props: {},
   data() {

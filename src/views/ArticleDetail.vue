@@ -39,6 +39,8 @@
     <!-- 使用底栏组件 -->
     <br />
     <Footer></Footer>
+    <!-- 使用回到顶部组件 -->
+    <Backtop></Backtop>
   </div>
 </template>
 
@@ -65,8 +67,8 @@ export default {
   data() {
     return {
       articleDetail: "",
-      commentList:[],
-      commentContent:"",
+      commentList: [],
+      commentContent: ""
     };
   },
   created() {
@@ -97,22 +99,22 @@ export default {
   beforeRouteUpdate() {},
   methods: {
     // 发布评论方法
-    publishComment(){
+    publishComment() {
       // 检查
-      if($cookies.get('isLogin')!="true"){
+      if ($cookies.get("isLogin") != "true") {
         this.$message({
-          message: '请先登录！',
-          type: 'warning'
+          message: "请先登录！",
+          type: "warning"
         });
-        return 
+        return;
       }
-      let contentStr=this.commentContent.trim();
-      if (contentStr==""){
+      let contentStr = this.commentContent.trim();
+      if (contentStr == "") {
         this.$message({
-          message: '不能发布空评论！',
-          type: 'warning'
+          message: "不能发布空评论！",
+          type: "warning"
         });
-        return 
+        return;
       }
       // 发布操作
       var opts = {
@@ -126,7 +128,7 @@ export default {
           //post请求参数
           username: $cookies.get("username"),
           content: this.commentContent,
-          article_id:this.articleDetail.id,
+          article_id: this.articleDetail.id
         })
       };
       fetch("http://127.0.0.1:9090/api/v1/PublishComment", opts)
@@ -139,23 +141,24 @@ export default {
         .then(data => {
           if (data.msg == "发布评论成功！") {
             this.updateComment();
-            this.commentContent="";
+            this.commentContent = "";
             this.$message("发布评论成功！");
           } else {
             this.$message("发布评论失败！");
           }
         });
     },
-    updateComment(){
+    updateComment() {
       var vm = this;
-      let url2 = "http://127.0.0.1:9090/api/v1/Comment/" + this.$route.params.id;
-    fetch(url2)
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(jsonData) {
-        vm.commentList = jsonData.data;
-      });
+      let url2 =
+        "http://127.0.0.1:9090/api/v1/Comment/" + this.$route.params.id;
+      fetch(url2)
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(jsonData) {
+          vm.commentList = jsonData.data;
+        });
     }
   },
   filter: {},
@@ -163,13 +166,13 @@ export default {
     compiledMD: function() {
       return marked(this.articleDetail.Content, { sanitize: true });
     },
-    usernameOrTip:function () {
-      if($cookies.get('isLogin')=="true"){
+    usernameOrTip: function() {
+      if ($cookies.get("isLogin") == "true") {
         return $cookies.get("username");
-      }else{
-        return "未登录"
+      } else {
+        return "未登录";
       }
-    },
+    }
   },
   watch: {}
 };

@@ -3,10 +3,10 @@
   <div>
     <!-- 使用导航栏组件 -->
     <NavMenu></NavMenu>
-    <br />
-    <br />
-    <br />
-    <br />
+    
+    <div class="height">
+
+    </div>
     <el-row>
       <el-col :span="2" offset="10">
         <div :class="{default:true,active:isLoginMode}" @click="isLoginMode=true">登录</div>
@@ -298,6 +298,9 @@ export default {
 </script>
 
 <style scoped>
+.height{
+  height: 200px;
+}
 .default {
   font-size: 20px;
   line-height: 20px;
