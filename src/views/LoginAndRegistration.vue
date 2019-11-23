@@ -88,8 +88,11 @@
         </div>
       </el-col>
     </el-row>
+    <div class="footer-div">
     <!-- 使用底栏组件 -->
     <Footer></Footer>
+
+    </div>
   </div>
 </template>
 
@@ -311,5 +314,10 @@ export default {
 }
 .hidden {
   visibility: hidden;
+}
+.footer-div{
+  width: 100%;
+  position: fixed;
+  bottom: 0px;
 }
 </style>
